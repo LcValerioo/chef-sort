@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAX 20
+#define TAM 6
+
 // ANÁLISE DE ALGORITMO - Desafio Chef Sort
 // Este é o arquivo inicial para o desafio. 
 // Dependendo do nível escolhido (Novato, Aventureiro ou Mestre), 
@@ -34,8 +37,39 @@ typedef struct {
 // Nível Novato: Bubble Sort para strings
 // Dica: Use strcmp() da biblioteca <string.h> para comparar strings.
 // Dica: Passe ponteiros para contadores de comparações e trocas se quiser alterá-los dentro da função.
-void bubbleSortStrings(char arr[][50], int n, int *comparacoes, int *trocas) {
-    // Sua lógica do Bubble Sort aqui
+// Função para imprimir os ingredientes
+void imprimir(char ingredientes[TAM][MAX]){
+    for(int i = 0; i < TAM; i++){
+        printf("%s\n", ingredientes[i]);
+    }
+}
+
+// Bubble Sort para strings
+void bubbleSort(char ingredientes[TAM][MAX], int *comp, int *trocas){
+    int i, j;
+    char temp[MAX];
+    int trocou;
+
+    for(i = 0; i < TAM - 1; i++){
+        trocou = 0;
+
+        for(j = 0; j < TAM - i - 1; j++){
+            (*comp)++;
+
+            // strcmp > 0 significa que a string da esquerda é "maior"
+            if(strcmp(ingredientes[j], ingredientes[j + 1]) > 0){
+                strcpy(temp, ingredientes[j]);
+                strcpy(ingredientes[j], ingredientes[j + 1]);
+                strcpy(ingredientes[j + 1], temp);
+
+                (*trocas)++;
+                trocou = 1;
+            }
+        }
+
+        if(!trocou)
+            break;
+    }
 }
 
 // Nível Aventureiro: Selection Sort para array de structs (Prato)
@@ -60,29 +94,49 @@ void recursiveInsertionSort(Comanda arr[], int n) {
 
 int main() {
     printf("=== BEM-VINDO AO CHEF SORT ===\n\n");
-
-    // ---------------------------------------------------------
+    printf("Escolha o nivel de dificuldade:\n");
+    printf("1. Novato (Organizar a Despensa com Bubble Sort)\n");
+    printf("2. Aventureiro (Organizar os Pratos com Selection Sort)\n");
+    printf("3. Mestre (Organizar as Comandas com Recursive Insertion Sort)\n");
+    printf("0. Sair\n");
+    int escolha;
+    scanf("%d", &escolha);
+    switch (escolha)
+    {
+    case  1:
     // ÁREA DO NÍVEL NOVATO (Despensa / Bubble Sort)
-    // ---------------------------------------------------------
-    /*
-    char ingredientes[5][50] = {"Tomate", "Cebola", "Alho", "Cenoura", "Batata"};
-    int num_ingredientes = 5;
-    int comparacoes = 0;
-    int trocas = 0;
+    //  Cenário: cozinha em caos
+    char ingredientes[TAM][MAX] = {
+        "Tomate",
+        "Cebola",
+        "Alho",
+        "Cenoura",
+        "Batata",
+        "Pimentao"
+    };
 
-    printf("--- Nivel Novato: Organizando a Despensa ---\n");
-    printf("Lista ANTES da ordenacao:\n");
-    // Laco para imprimir ingredientes antes
+    printf("COZINHA EM CAOS!\n");
+    printf("Os ingredientes chegaram desorganizados...\n\n");
 
-    // Chamada da funcao bubbleSortStrings(...)
+    printf("Ingredientes ANTES da ordenacao:\n");
+    imprimir(ingredientes);
+    printf("\n----------------------------------------------\n");
 
-    printf("\nLista DEPOIS da ordenacao:\n");
-    // Laco para imprimir ingredientes depois
-    // Imprimir totais de comparacoes e trocas
-    */
+    int comp = 0, trocas = 0;
+    bubbleSort(ingredientes, &comp, &trocas);
+
+    printf("\nIngredientes DEPOIS da ordenacao:\n");
+    imprimir(ingredientes);
+    printf("\n----------------------------------------------\n");
+    
+    printf("\nMetricas do algoritmo:\n");
+    printf("Comparacoes: %d\n", comp);
+    printf("Trocas: %d\n", trocas);
 
 
-    // ---------------------------------------------------------
+        break;
+    case  2:
+        // ---------------------------------------------------------
     // ÁREA DO NÍVEL AVENTUREIRO (Pratos / Selection Sort)
     // ---------------------------------------------------------
     /*
@@ -93,15 +147,19 @@ int main() {
     */
 
 
-    // ---------------------------------------------------------
-    // ÁREA DO NÍVEL MESTRE (Comandas / Recursive Insertion Sort)
-    // ---------------------------------------------------------
-    /*
-    // Inicialize aqui o seu vetor de Comandas
+        break;
+    case  3:
+        /* code */
+        break;
+    case  0:
+        printf("Saindo do Chef Sort. Ate a proxima!\n");
+        return 0;
+    default:
+        printf("Opcao invalida. Tente novamente.\n");
+        return 1;
+    }
     
-    printf("\n--- Nivel Mestre: Organizando as Comandas ---\n");
-    // Imprima antes, chame a funcao recursiveInsertionSort, imprima depois
-    */
+    printf("\nObrigado por jogar o Chef Sort! Ate a proxima!\n");
 
     return 0;
 }
