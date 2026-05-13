@@ -22,12 +22,12 @@ typedef struct {
 
 
 // Struct para o Nível Mestre
-/*
+
 typedef struct {
     char nome_prato[50];
     int numero_comanda;
 } Comanda;
-*/
+
 
 
 // ====================================================================
@@ -103,23 +103,51 @@ void selectionSortPratos(Prato arr[], int n) {
 
 void imprimePratos(Prato arr[], int n) {
     printf("\n--- Lista de Pratos ---\n");
-    printf("%-25s | %-20s\n", "Nome do Prato", "Qtd Ingredientes");
-    printf("-----------------------------------------------\n");
+    printf("%-25s || %-20s\n", "Nome do Prato", "Qtd Ingredientes");
+    printf("=================================================\n");
     for(int i = 0; i < n; i++){
-        printf("%-25s | %-20d\n", arr[i].nome, arr[i].qtd_ingredientes);
+        printf("%-25s || %-20d\n", arr[i].nome, arr[i].qtd_ingredientes);
     }
 
-    printf("-----------------------------------------------\n");
+    printf("=================================================\n");
 }
 
 
 // Nível Mestre: Recursive Insertion Sort para array de structs (Comanda)
 // Dica: Lembre-se de definir o "caso base" (n <= 1) para parar a recursão!
-/*
+
 void recursiveInsertionSort(Comanda arr[], int n) {
-    // Sua lógica do Insertion Sort Recursivo aqui
+    // CASO BASE: Se o array tiver 1 ou 0 elementos, já está ordenado
+    if (n <= 1) {
+        return;
+    }
+
+    // CHAMADA RECURSIVA: Ordena os primeiros n-1 elementos
+    recursiveInsertionSort(arr, n - 1);
+
+    // TRABALHO ATUAL: Insere o último elemento na posição correta
+    Comanda last = arr[n - 1];
+    int j = n - 2;
+
+    // Move os elementos maiores que 'last' para uma posição à frente
+    while (j >= 0 && arr[j].numero_comanda > last.numero_comanda) {
+        arr[j + 1] = arr[j];
+        j--;
+    }
+    arr[j + 1] = last;
 }
-*/
+
+void imprimirStatusCozinha(Comanda arr[], int n) {
+    printf("\n--- Status da Cozinha (Comandas) ---\n");
+    printf("%-25s || %-20s\n", "Nome do Prato", "Numero da Comanda");
+    printf("===============================================\n");
+    for(int i = 0; i < n; i++){
+        printf("%-25s || %-20d\n", arr[i].nome_prato, arr[i].numero_comanda);
+    }
+
+    printf("===============================================\n");
+}
+
 
 
 // ====================================================================
@@ -201,12 +229,29 @@ int main() {
         // ---------------------------------------------------------
     // ÁREA DO NÍVEL MESTRE (Comandas / Recursive Insertion Sort)
     // ---------------------------------------------------------
-    /*
-    // Inicialize aqui o seu vetor de Comandas
     
+    // Inicialize aqui o seu vetor de Comandas
+    Comanda pedidos[5] = {
+        {"Pizza", 105},
+        {"Salada", 102},
+        {"Macarrao", 104},
+        {"Hamburguer", 101},
+        {"Sushi", 103}
+    };
+
+    int n = 5; // Número de comandas
+    int comparacoes = 0, movimentacoes = 0; // Contadores para métricas
+
     printf("\n--- Nivel Mestre: Organizando as Comandas ---\n");
-    // Imprima antes, chame a funcao recursiveInsertionSort, imprima depois
-    */
+    printf("Pedidos chegando (Desordenados):\n");
+    imprimirStatusCozinha(pedidos, n);
+
+    //Colocando ordem na casa (ordenando as comandas)
+    recursiveInsertionSort(pedidos, n);
+
+    printf("Pedidos organizados (Ordenados por numero de comanda):\n");
+    imprimirStatusCozinha(pedidos, n);
+    printf("Metricas - Comparacoes: %d | Movimentacoes: %d\n", comparacoes, movimentacoes);
         break;
     case  0:
         printf("Saindo do Chef Sort. Ate a proxima!\n");
